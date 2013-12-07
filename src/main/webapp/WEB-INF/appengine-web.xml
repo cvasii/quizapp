@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">  
+    <application>ro-cvasii-quizapp</application>  
+    <!--  This variable is defined in your POM file -->  
+    <version>${gae.application.version}</version>  
+    <threadsafe>true</threadsafe>
+    <system-properties>  
+        <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>  
+    </system-properties>  
+    <sessions-enabled>true</sessions-enabled>  
+    <!--  
+    <static-files>  
+        <include path="/site/**" expiration="1d 12h" />  
+    </static-files>  
+    -->  
+</appengine-web-app>

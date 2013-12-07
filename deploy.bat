@@ -1,0 +1,1 @@
+D:\\Installs\\maven_repo\\com\\google\\appengine\\appengine-java-sdk\\1.8.8\\appengine-java-sdk-1.8.8\\bin\\appcfg.cmd update D:\\Facultate\\master\\An1\\sem1\\cc\\quizapp\\target\\quizapp-1.0-SNAPSHOT

@@ -23,6 +23,11 @@
 <link href='resources/bootstrap/css/bootstrap.css' rel='stylesheet'>
 <link href='resources/bootstrap/css/navbar-fixed-top.css'
 	rel='stylesheet'>
+<link rel="stylesheet"
+	href="resources/bootstrap-multiselect/css/bootstrap-multiselect.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="resources/bootstrap-multiselect/css/prettify.css" type="text/css">
 
 <!-- Underscore -->
 <script src="resources/underscore/underscore-min.js"></script>
@@ -38,49 +43,67 @@
 </script>
 
 <script type="text/html" id="tpl_createQuiz">
-	<h3>Create a new Quiz</h3>
-<div class="progress">
-	<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
-		<span class="sr-only">0% Complete</span>
-	</div>
-</div>
+<h3>Create a new Quiz</h3>
 <div class="row" id="chooseQuizCategory">
-	<div class="col-sm-3">
-		<div class="panel panel-success">
-            <div class="panel-heading">
-              <h4 class="panel-title">Choose category</h4>
-            </div>
-        </div>
-    </div>
-
-	<div class="col-sm-3">
-		<select id="quizCategorySelected">
-			<option value="a">None</option>
-			<option value="">Category1</option>
-			<option value="">Category2</option>
-			<option value="">Category3</option>
-		</select>
-    </div>    
+	<form class="form-horizontal" role="form">
+		<div class="form-group">
+			<label for="quizName" class="col-sm-2 control-label">Name</label>
+			<div class="col-sm-5">
+				<input type="text" class="form-control" id="quizName" placeholder="Quiz Name">
+			</div>
+			<div class="col-sm-3" id="alertQuizName" style="display:none">
+				<div class="alert alert-danger">Please enter quiz name.</div>
+			</div>
+		</div>
+	 
+		<div class="form-group">
+			<label for="quizCategorySelected" class="col-sm-2 control-label">Choose categories</label>
+			<div class="col-sm-5">
+				<select id="quizCategorySelected" multiple="multiple">
+					<option value="a">None</option>
+					<option value="b">Category1</option>
+					<option value="c">Category2</option>
+					<option value="d">Category3</option>
+				</select>            
+			</div>
+			<div class="col-sm-3" id="alertQuizCategory" style="display:none">
+				<div class="alert alert-danger">Please choose at least one category.</div>
+			</div>
+		</div>
+	  
+		<div class="form-group">
+			<label for="quizPrivateCheckbox" class="col-sm-2 control-label">Private</label>
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" id="quizPrivateCheckbox">
+					</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group" style='display:none' id='quizPasswordDiv'>
+			<label for="quizPassword" class="col-sm-2 control-label">Password</label>
+			<div class="col-sm-5">
+				<input type="password" class="form-control" id="quizPassword" placeholder="Quiz Password">
+			</div>
+			<div class="col-sm-3" id="alertQuizPassword" style="display:none">
+				<div class="alert alert-danger">Please enter the password.</div>
+			</div>
+		</div>
+	  
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button class="btn btn-primary" id="createQuizBtn">Create Quiz</button>
+			</div>
+		</div>
+	</form>
+	  
 </div>
+</script>
 
-<div class="row" id="chooseQuizType">
-	<div class="col-sm-3">
-		<div class="panel panel-success">
-            <div class="panel-heading">
-              <h3 class="panel-title">Choose quiz type</h3>
-            </div>
-        </div>
-	</div>
-
-	<div class="col-sm-3">
-		<select id="quizTypeSelected">
-			<option value="a">None</option>
-			<option value="">Category1</option>
-			<option value="">Category2</option>
-			<option value="">Category3</option>
-		</select>
-    </div>    
-</div>
+<script type="text/html" id="tpl_addQuestions">
+<h3>Add questions</h3>
 </script>
 
 </head>
@@ -117,8 +140,13 @@
 	<!-- /container -->
 </body>
 </html>
+<script type="text/javascript"
+	src="resources/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+<script type="text/javascript"
+	src="resources/bootstrap-multiselect/js/prettify.js"></script>
 <script src="resources/appjs/handleNavigation.js"></script>
 <script src="resources/appjs/createQuiz.js"></script>
+<script src="resources/appjs/addQuestions.js"></script>
 <script>
 	$(document).ready(function() {
 

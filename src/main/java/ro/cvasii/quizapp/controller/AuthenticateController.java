@@ -39,12 +39,12 @@ public class AuthenticateController {
 			LOGGER.info("User " + nickname + " [ " + email
 					+ "] just entered the application.");
 			appUserService.register(email, nickname);
-			resp.sendRedirect("/welcome");
+			resp.sendRedirect("/my");
 		}
 
 	}
 
-	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
+	@RequestMapping(value = "/my", method = RequestMethod.GET)
 	public String welcome() {
 		return "index";
 	}

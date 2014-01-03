@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import ro.cvasii.quizapp.domain.QuizAppUser;
 import ro.cvasii.quizapp.service.QuizAppUserService;
@@ -44,5 +48,21 @@ public class UserController {
 		mapper.setDateFormat(df);
 		mapper.getSerializationConfig().with(df);
 		return mapper.writeValueAsString(allUsers);
+	}
+	
+	@RequestMapping(value = "/getCurrentUser", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody
+	public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String nickname = "";
+		UserService userService = UserServiceFactory.getUserService();
+		User currentUser = userService.getCurrentUser();
+		if (currentUser == null) {
+			LOGGER.info("The user is not authenticated with the google account. Will pass to google for this process.");
+			response.sendRedirect(userService.createLoginURL(request.getRequestURI()));
+		} else {
+			nickname = currentUser.getNickname();
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(nickname);
 	}
 }

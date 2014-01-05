@@ -6,7 +6,7 @@ var QuestionAdditioner = {
 		$("#mainContent").html(_.template(template));
 
 		$("#quizDataHeading").append(
-				'<h3 class="panel-title" id="quizDataName" data-value="'
+				'<h3 class="panel-title" id="quizDataName" data-quizId="'
 						+ quizData.id + '">' + quizData.name + '</h3>');
 
 		$("#quizDataBody").append('<p>Categories: </p>');
@@ -32,7 +32,46 @@ var QuestionAdditioner = {
 		}
 		
 		$.loader('close');
+		
+		this.addQuestion();
+		this.addAnswer();
+		this.editQuizName();
+	},
+	
+	editQuizName : function(){
+		$("#quizDataName").editable({
+			type: 'text',
+			value: $("#quizDataName").html()
+		});
+	},
+	
+	addQuestion : function(){
+		$("#addQuestion").on('click', function(event) {
+			event.preventDefault();
+			$("#questionText").editable({
+				type: 'textarea',
+				value: 'Question'
+			});
+			$('#questionCategory').editable({
+				type: 'select',
+		        value: 0,    
+		        source: [
+		              {value: 0, text: 'None selected'},  
+		              {value: 1, text: 'Single choice'},
+		              {value: 2, text: 'Multiple choice'}
+		           ]
+		    });
+			$("#addQuestion").hide('slow');
+			$("#questionForm").show('slow');
+			
+		});
+	},
 
+	addAnswer : function(){
+		$("#addAnswerBtn").on('click', function(event) {
+			event.preventDefault();
+		});
 	}
+
 
 }

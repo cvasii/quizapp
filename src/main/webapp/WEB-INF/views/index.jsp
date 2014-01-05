@@ -21,6 +21,8 @@
 <!-- bootstrap -->
 <script src="resources/bootstrap/js/bootstrap.js"></script>
 <link href='resources/bootstrap/css/bootstrap.css' rel='stylesheet'>
+<link href='resources/bootstrap3-editable/css/bootstrap-editable.css' rel='stylesheet'>
+<script src="resources/bootstrap3-editable/js/bootstrap-editable.js"></script>
 <link href='resources/bootstrap/css/navbar-fixed-top.css'
 	rel='stylesheet'>
 <link rel="stylesheet"
@@ -95,7 +97,7 @@
 	  
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button class="btn btn-primary" id="createQuizBtn">Create Quiz</button>
+				<button class="btn btn-success" id="createQuizBtn">Create Quiz</button>
 			</div>
 		</div>
 	</form>
@@ -107,15 +109,48 @@
 <h3>Add questions</h3>
 <div class="row" id="addCategories">
 	<div class="col-sm-2" id="quizData">
-		<div class="panel panel-primary">
+		<div class="panel panel-success">
   			<div class="panel-heading" id="quizDataHeading">
   			</div>
   			<div class="panel-body" id="quizDataBody">
   			</div>
 		</div>	
 	</div>
-	<div class="col-sm-3">
-		
+	<div class="col-sm-10">
+		<button class="btn btn-success" id="addQuestion">Add a new question</button>
+		<form class="form-horizontal" role="form"  style='display:none' id="questionForm">
+			
+			<div class="form-group">
+				<label for="questionCategory" class="col-sm-2 control-label">Choose category</label>
+				<div class="col-sm-7">
+					<p id="questionCategory">
+						<!--<option value="0">Single choice</option>
+						<option value="1">Multiple choice</option>-->
+					</p>            
+				</div>
+				<div class="col-sm-3" id="alertQuestionCategory" style="display:none">
+					<div class="alert alert-danger">Please choose a category.</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="questionText" class="col-sm-2 control-label">Question</label>
+				<div class="col-sm-7">
+					<p id="questionText"></p>
+					<!--<textarea class="form-control" id="questionText" placeholder="Question"></textarea>-->
+				</div>
+				<div class="col-sm-3" id="alertQuestionText" style="display:none">
+					<div class="alert alert-danger">Please enter the question.</div>
+				</div>
+			</div>
+		 
+			<div class="form-group">
+				<div class="col-sm-2">
+					<button class="btn btn-success btn-sm" id="addAnswerBtn">Add answer</button>
+				</div>
+			</div>
+		</form>
+
 	</div>
 </div>
 </script>
@@ -169,6 +204,8 @@
 			content : ''
 		});
 
+		$.fn.editable.defaults.mode = 'popup';
+		
 		//get logged in user to display nickname
 		$.ajax({
 			url : 'getCurrentUser',

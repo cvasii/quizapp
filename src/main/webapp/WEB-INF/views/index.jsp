@@ -32,6 +32,10 @@
 <!-- Underscore -->
 <script src="resources/underscore/underscore-min.js"></script>
 
+<link href="resources/jquery-mask/jquery.loader.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript"
+	src="resources/jquery-mask/jquery.loader.js"></script>
 <!-- Templates -->
 <script type="text/html" id="tpl_jumbotron">
 <div class="jumbotron">
@@ -60,10 +64,7 @@
 			<label for="quizCategorySelected" class="col-sm-2 control-label">Choose categories</label>
 			<div class="col-sm-5">
 				<select id="quizCategorySelected" multiple="multiple">
-					<option value="a">None</option>
-					<option value="b">Category1</option>
-					<option value="c">Category2</option>
-					<option value="d">Category3</option>
+
 				</select>            
 			</div>
 			<div class="col-sm-3" id="alertQuizCategory" style="display:none">
@@ -104,6 +105,19 @@
 
 <script type="text/html" id="tpl_addQuestions">
 <h3>Add questions</h3>
+<div class="row" id="addCategories">
+	<div class="col-sm-2" id="quizData">
+		<div class="panel panel-primary">
+  			<div class="panel-heading" id="quizDataHeading">
+  			</div>
+  			<div class="panel-body" id="quizDataBody">
+  			</div>
+		</div>	
+	</div>
+	<div class="col-sm-3">
+		
+	</div>
+</div>
 </script>
 
 </head>
@@ -150,6 +164,11 @@
 <script>
 	$(document).ready(function() {
 
+		$.loader({
+			className : "blue-with-image",
+			content : ''
+		});
+
 		//get logged in user to display nickname
 		$.ajax({
 			url : 'getCurrentUser',
@@ -164,5 +183,7 @@
 		$("#mainContent").html(_.template(template));
 
 		NavigationHandler.init();
+
+		$.loader('close');
 	});
 </script>

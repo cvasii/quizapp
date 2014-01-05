@@ -39,5 +39,6 @@
 	<context:component-scan base-package="ro.cvasii.quizapp.service" />
 	<context:component-scan base-package="ro.cvasii.quizapp.dao" />
 	<context:component-scan base-package="ro.cvasii.quizapp.domain" />
-
+	<context:component-scan base-package="ro.cvasii.quizapp.util" />
+	<context:component-scan base-package="ro.cvasii.quizapp.transformation" />
 </beans>

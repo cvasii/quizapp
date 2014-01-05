@@ -24,4 +24,5 @@ public interface GenericService<T, I> {
 	T findById(I id);
 
 	List<T> findAll();
+
 }

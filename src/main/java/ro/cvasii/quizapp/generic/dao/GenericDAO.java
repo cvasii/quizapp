@@ -2,6 +2,8 @@ package ro.cvasii.quizapp.generic.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 /**
  * Generic interface for DAO operations
  * @author comy
@@ -21,4 +23,7 @@ public interface GenericDAO<T, I> {
 	
 	List<T> findAll();
 	
+	EntityManager getEm();
+	
+	Class<T> getClasz();
 }

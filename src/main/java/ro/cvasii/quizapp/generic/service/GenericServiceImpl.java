@@ -60,5 +60,4 @@ public class GenericServiceImpl<T, I> implements GenericService<T, I> {
 	public List<T> findAll() {
 		return genericDAO.findAll();
 	}
-
 }

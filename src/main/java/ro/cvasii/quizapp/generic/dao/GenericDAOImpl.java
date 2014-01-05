@@ -7,8 +7,9 @@ import javax.persistence.PersistenceContext;
 
 /**
  * Implementation for @see GenericDAO
+ * 
  * @author comy
- *
+ * 
  * @param <T>
  * @param <I>
  */
@@ -22,6 +23,16 @@ public class GenericDAOImpl<T, I> implements GenericDAO<T, I> {
 	public GenericDAOImpl(Class<T> clasz) {
 		super();
 		this.clasz = clasz;
+	}
+
+	@Override
+	public EntityManager getEm() {
+		return em;
+	}
+
+	@Override
+	public Class<T> getClasz() {
+		return clasz;
 	}
 
 	@Override

@@ -60,7 +60,7 @@ var QuizCreator = {
 			var isChecked = $("#quizPrivateCheckbox").prop('checked');
 			var password = $("#quizPassword").val();
 			if (isChecked) {
-				if (password === "") {
+				if (password.length < 6) {
 					$("#alertQuizPassword").show('slow');
 					isOk = false;
 				} else {

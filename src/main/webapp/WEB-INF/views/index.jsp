@@ -91,7 +91,7 @@
 				<input type="password" class="form-control" id="quizPassword" placeholder="Quiz Password">
 			</div>
 			<div class="col-sm-3" id="alertQuizPassword" style="display:none">
-				<div class="alert alert-danger">Please enter the password.</div>
+				<div class="alert alert-danger">Please enter the password, minimum 6 charaters.</div>
 			</div>
 		</div>
 	  
@@ -107,8 +107,8 @@
 
 <script type="text/html" id="tpl_addQuestions">
 <h3>Add questions</h3>
-<div class="row" id="addCategories">
-	<div class="col-sm-2" id="quizData">
+<div class="row" id="addQuestions">
+	<div class="col-sm-3" id="quizData">
 		<div class="panel panel-success">
   			<div class="panel-heading" id="quizDataHeading">
   			</div>
@@ -116,16 +116,15 @@
   			</div>
 		</div>	
 	</div>
-	<div class="col-sm-10">
+	<div class="col-sm-9">
 		<button class="btn btn-success" id="addQuestion">Add a new question</button>
+		<button class="btn btn-success" id="addQuestion">Finish quiz</button>
 		<form class="form-horizontal" role="form"  style='display:none' id="questionForm">
 			
 			<div class="form-group">
 				<label for="questionCategory" class="col-sm-2 control-label">Choose category</label>
 				<div class="col-sm-7">
 					<p id="questionCategory">
-						<!--<option value="0">Single choice</option>
-						<option value="1">Multiple choice</option>-->
 					</p>            
 				</div>
 				<div class="col-sm-3" id="alertQuestionCategory" style="display:none">
@@ -137,7 +136,6 @@
 				<label for="questionText" class="col-sm-2 control-label">Question</label>
 				<div class="col-sm-7">
 					<p id="questionText"></p>
-					<!--<textarea class="form-control" id="questionText" placeholder="Question"></textarea>-->
 				</div>
 				<div class="col-sm-3" id="alertQuestionText" style="display:none">
 					<div class="alert alert-danger">Please enter the question.</div>

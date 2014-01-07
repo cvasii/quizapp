@@ -57,4 +57,23 @@ public class QuizController {
 
 		return mapper.writeValueAsString(transformationService.quizToDTO(quiz));
 	}
+	
+	@RequestMapping(value = "/quiz/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public String saveQuiz(@RequestBody QuizDTO quizDTO, HttpServletRequest req,
+			HttpServletResponse resp) throws Exception {
+		LOGGER.info(quizDTO.toString());
+		UserService userService = UserServiceFactory.getUserService();
+		User currentUser = userService.getCurrentUser();
+		LOGGER.info(currentUser.toString());
+
+		Quiz quiz = quizService.update(quizDTO, currentUser);
+
+		mapper.registerModule(new JodaModule());
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		mapper.setDateFormat(df);
+		mapper.getSerializationConfig().with(df);
+
+		return mapper.writeValueAsString(transformationService.quizToDTO(quiz));
+	}
 }

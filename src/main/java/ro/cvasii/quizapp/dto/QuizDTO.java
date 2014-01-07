@@ -4,15 +4,25 @@ import java.util.List;
 
 /**
  * Quiz dto clas
+ * 
  * @author comy
- *
+ * 
  */
 public class QuizDTO {
 
+	private Long id;
 	private String name;
 	private List<Long> categories;
 	private Boolean isPrivate;
 	private String password;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -51,5 +61,4 @@ public class QuizDTO {
 		return this.name + " " + this.password + " " + this.isPrivate;
 	}
 
-	
 }

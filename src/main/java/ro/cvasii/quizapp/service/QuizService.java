@@ -43,8 +43,17 @@ public interface QuizService extends GenericService<Quiz, Key> {
 
 	/**
 	 * Saves a quiz from a dto
+	 * 
 	 * @param quizDTO
 	 * @return
 	 */
 	Quiz save(QuizDTO quizDTO, User currentUser);
+
+	/**
+	 * Updates a quiz from dto
+	 * 
+	 * @param quizDTO
+	 * @return
+	 */
+	Quiz update(QuizDTO quizDTO, User currentUser);
 }

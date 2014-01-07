@@ -1,7 +1,5 @@
 package ro.cvasii.quizapp.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -16,7 +14,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import ro.cvasii.quizapp.dao.QuizDAO;
 import ro.cvasii.quizapp.domain.Quiz;
-import ro.cvasii.quizapp.domain.QuizAppUser;
 import ro.cvasii.quizapp.domain.QuizCategory;
 import ro.cvasii.quizapp.dto.QuizDTO;
 import ro.cvasii.quizapp.dto.QuizFullDTO;
@@ -75,23 +72,14 @@ public class QuizServiceImpl extends GenericServiceImpl<Quiz, Key> implements
 	@Override
 	@Transactional
 	public Quiz save(QuizDTO quizDTO, User currentUser) {
-		Quiz quiz = new Quiz();
-		quiz.setName(quizDTO.getName());
-		quiz.setPassword(quizDTO.getPassword());
-		quiz.setIsPrivate(quizDTO.getIsPrivate());
-		quiz.setDateCreated(new Date());
-		List<Key> categories = new ArrayList<Key>();
-		for (Long keyId : quizDTO.getCategories()) {
-			Key key = KeyFactory.createKey(QuizCategory.class.getSimpleName(),
-					keyId);
-			categories.add(key);
-		}
-		quiz.setCategories(categories);
-
-		QuizAppUser user = appUserService.findByEmailAndNickname(
-				currentUser.getEmail(), currentUser.getNickname());
-		quiz.setUser(user.getId());
-
+		Quiz quiz = transformationService.dtoToQuiz(quizDTO, currentUser);
 		return save(quiz);
+	}
+
+	@Override
+	@Transactional
+	public Quiz update(QuizDTO quizDTO, User currentUser) {
+		Quiz quiz = transformationService.dtoToQuiz(quizDTO, currentUser);
+		return saveOrUpdate(quiz, quiz.getId());
 	}
 }

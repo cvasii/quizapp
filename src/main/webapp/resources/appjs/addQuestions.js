@@ -4,218 +4,37 @@ var QuestionAdditioner = {
 
 		var template = $("#tpl_addQuestions").html();
 		$("#mainContent").html(_.template(template));
+		var templateQuizDetail = $("#tpl_quizDetailsEditPanel").html();
+		$("#addQuestions").html(_.template(templateQuizDetail));
+		$("#addQuestions").append('<div class="col-sm-9" id="addQuestionDiv"></div>');
+		QuizDetailsEditPanel.init(quizData);
 
-		$("#quizDataHeading").append(
-				'<h3 class="panel-title" id="quizDataName" data-quizId="'
-						+ quizData.id + '">' + quizData.name + '</h3>');
-
-		$("#quizDataBody").append('<p id="editCategories">Categories: </p>');
-
-		$("#quizDataBody").append('<div id="quizDataCategories"></div>');
-		var html = '';
-		$(quizData.categories).each(
-				function(key, value) {
-					html += '<li data-quizCategoryId="' + value.id + '">'
-							+ value.name + '</li>';
-				});
-		var $el = $('#quizDataCategories');
-		if (html)
-			html = '<ul>' + html + '</ul>';
-		$el.html(html);
-
-		$("#quizDataBody").append('<br/>');
-		if (quizData.isPrivate) {
-			$("#quizDataBody").append(
-					'<p id="quizDataIsPrivate" data-quizIsPrivate="'
-							+ quizData.isPrivate + '">Private</p>');
-		} else {
-			$("#quizDataBody").append(
-					'<p id="quizDataIsPrivate" data-quizIsPrivate="'
-							+ quizData.isPrivate + '">Public</p>');
-		}
+		$("#addQuestionDiv")
+				.html(
+						'<div><button class="btn btn-success" id="addQuestion">Add a new question</button></div>');
 		
-		$("#quizDataBody").append('<br/>');
-		$("#quizDataBody").append('<p>Password</p>');
-		if (quizData.isPrivate) {
-			$("#quizDataBody").append(
-					'<p id="quizDataPassword" data-value=' + quizData.password
-							+ '>********</p></div>');
-			QuestionAdditioner.editPassword();
-		}
-		else{
-			$("#quizDataBody").append(
-					'<p id="quizDataPassword" data-value=' + quizData.password
-							+ '>None</p></div>');
-		}
-
-		$.loader('close');
-
+		this.preventForm();
 		this.addQuestion();
-		this.addAnswer();
-		this.editQuizName();
-		this.editIsPrivate();
-
-		var sourceData = [];
-		$.ajax({
-			url : '/quizcategory',
-			type : 'GET',
-			success : function(data) {
-				$(data).each(function(key, value) {
-					var entry = {};
-					entry.value = value.id;
-					entry.text = value.name;
-					sourceData.push(entry);
-				});
-				QuestionAdditioner.editQuizCategories(sourceData);
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
-				console.log(xhr.status);
-				console.log(thrownError);
-			}
-		});
+		
+		$.loader('close');
 	},
 
-	editQuizName : function() {
-		$("#quizDataName").editable({
-			type : 'text',
-			value : $("#quizDataName").html(),
-			placement : 'bottom',
-			validate : function(value) {
-				if ($.trim(value) == '')
-					return 'This field is required';
-			},
-			title : 'Enter quiz name',
-			success : function() {
-				console.log("ToDo save quiz name")
-			}
-		});
-	},
-
-	editIsPrivate : function() {
-		var isPrivate = $("#quizDataIsPrivate").attr('data-quizIsPrivate');
-		var currentValue;
-		if (isPrivate == "true") {
-			currentValue = 1;
-		} else {
-			currentValue = 0;
-		}
-		$("#quizDataIsPrivate").editable({
-			type : 'select',
-			value : currentValue,
-			source : [ {
-				value : 0,
-				text : 'Public'
-			}, {
-				value : 1,
-				text : 'Private'
-			} ],
-			placement : 'bottom',
-			success : function(response, newValue) {
-				if (newValue == 0) {
-					$("#quizDataIsPrivate").attr('data-quizIsPrivate', false);
-					$('#quizDataPassword').editable('destroy');
-					$('#quizDataPassword').html('None');
-					$('#quizDataPassword').attr('data-value', '');
-				} else if (newValue == 1) {
-					$("#quizDataIsPrivate").attr('data-quizIsPrivate', true);
-					QuestionAdditioner.editPassword();
-				}
-				console.log("ToDo save isPrivate");
-			}
-		});
-	},
-
-	editQuizCategories : function(sourceData) {
-
-		var selectedCategories = [];
-		$("#quizDataCategories li").each(function(key, value) {
-			selectedCategories.push($(value).attr('data-quizCategoryId'));
-		});
-
-		$("#quizDataCategories").editable(
-				{
-					type : 'checklist',
-					title : 'Select categories',
-					source : sourceData,
-					value : selectedCategories,
-					display : function(value, sourceData) {
-						var $el = $('#quizDataCategories'), checked, html = '';
-						if (!value) {
-							$el.empty();
-							return;
-						}
-						checked = $.grep(sourceData, function(o) {
-							return $.grep(value, function(v) {
-								return v == o.value;
-							}).length;
-						});
-
-						$.each(checked, function(i, v) {
-							html += '<li data-quizCategoryId="' + v.value
-									+ '">' + $.fn.editableutils.escape(v.text)
-									+ '</li>';
-						});
-						if ($("#quizDataCategories")
-								.attr('data-quizCategoryId') != undefined) {
-							html += $("#quizDataCategories li").html();
-						}
-						if (html)
-							html = '<ul>' + html + '</ul>';
-						$el.html(html);
-					},
-					validate : function(value) {
-						if (value.length == 0)
-							return 'Please select at least one category';
-					},
-					placement : 'bottom',
-					success : function() {
-						console.log("ToDo save quiz categories")
-					}
-
-				});
-	},
-
-	editPassword : function() {
-		$("#quizDataPassword").editable({
-			type : 'password',
-			title : 'Change password',
-			placement : 'bottom',
-			value : $('#quizDataPassword').attr('data-value'),
-			success : function(response, newValue){
-				console.log('ToDo save password and verify at end is a password exists');
-				$('#quizDataPassword').attr('data-value', newValue);
-			},
-			display : function(value, sourceData){
-				var $el = $('#quizDataPassword'), html = '';
-				if (!value) {
-					$el.empty();
-					return;
-				}
-				$("#quizDataPassword").attr('data-value', value);
-				html = '********';
-				$el.html(html);
-			},
-			validate : function(value) {
-				if (value.length < 6)
-					return 'Please enter the password, minimum 6 characters.';
-			}
-		});
-	},
-
+	
 	addQuestion : function() {
 		$("#addQuestion").on('click', function(event) {
 			event.preventDefault();
-			$("#questionText").editable({
-				type : 'textarea',
-				value : 'Question',
-				placement : 'right',
-				title : 'Add question',
-				inputclass : 'form-control',
-				placeholder : 'Question'
-			});
+
+			var template = $("#tpl_addQuestion").html();
+			$("#addQuestionDiv").html(_.template(template));
+
+			QuestionAdditioner.saveQuestion();
+			QuestionAdditioner.editAnswer();
+			QuestionAdditioner.addAnswer();
+
 			$('#questionCategory').editable({
 				type : 'select',
 				value : 0,
+				defaultValue : '',
 				source : [ {
 					value : 0,
 					text : 'None selected'
@@ -227,18 +46,252 @@ var QuestionAdditioner = {
 					text : 'Multiple choice'
 				} ],
 				placement : 'right',
-				title : 'Select question type'
+				title : 'Select question type',
+				display : function(value, sourceData) {
+					var $el = $('#questionCategory'), html = '';
+					if (!value) {
+						$el.empty();
+						return;
+					}
+					$el.attr('data-value', value);
+
+					$.each(sourceData, function(i, v) {
+						if (v.value == $el.attr('data-value')) {
+							html += $.fn.editableutils.escape(v.text);
+						}
+					});
+					$el.html(html);
+				},
+				validate : function(value) {
+					if (value == 0)
+						return 'Please select a category.';
+				}
 			});
-			$("#addQuestion").hide('slow');
-			$("#questionForm").show('slow');
+
+			$("#questionText").editable({
+				defaultValue : '',
+				type : 'textarea',
+				placement : 'right',
+				title : 'Add question',
+				placeholder : 'Question',
+				value : '',
+				validate : function(value) {
+					if (value.length == 0)
+						return 'Please enter the question.';
+				}
+			});
 
 		});
 	},
 
 	addAnswer : function() {
-		$("#addAnswerBtn").on('click', function(event) {
+		$("#addAnswer")
+				.on(
+						'click',
+						function(event) {
+							event.preventDefault();
+							var answerNo = $(
+									$('.form-group label')[$('.form-group label').length - 2])
+									.html()[$(
+									$('.form-group label')[$('.form-group label').length - 2])
+									.html().length - 1]++ + 1;
+							$("#questionForm")
+									.append(
+											'<div class="form-group" data-name="answerDiv"><label class="col-sm-2 control-label" > Answer '
+													+ answerNo
+													+ '</label ><label class="col-sm-2 control-label"><input type="checkbox" data-name="questionCorrectAnswer"> Is correct</input></label><div class="col-sm-4" ><p data-name="questionAnswer"></p></div ><span class="glyphicon glyphicon-remove"></div>')
+							$('[data-name="questionAnswer"]').editable(
+									'destroy');
+							QuestionAdditioner.editAnswer();
+							QuestionAdditioner.removeAnswer();
+						});
+	},
+
+	editAnswer : function() {
+		$('[data-name="questionAnswer"]').editable({
+			type : 'text',
+			placement : 'right',
+			defaultValue : '',
+			title : 'Add answer',
+			placeholder : 'Question',
+			value : '',
+			validate : function(value) {
+				if (value.length == 0)
+					return 'Please enter the answer.';
+			}
+		});
+	},
+
+	removeAnswer : function() {
+		$(".glyphicon").on('click', function(event) {
+			event.preventDefault();
+			$($(this).parent().parent()).find($($(this).parent())).remove();
+			console.log("remove answer");
+			QuestionAdditioner.recalculateAnswerNos();
+		});
+	},
+
+	recalculateAnswerNos : function() {
+		var noAnswer = 0;
+		$.each($('.form-group[data-name="answerDiv"]'), function(key, value) {
+			noAnswer++;
+			$($(value).find('label').first()).html('Answer ' + noAnswer);
+		});
+	},
+
+	saveQuestion : function() {
+		$("#saveQuestion")
+				.on(
+						'click',
+						function(event) {
+							event.preventDefault();
+							var isOk = true;
+
+							if ($("#questionCategory").attr('data-value') == undefined) {
+								$("#alertQuestionCategory").show();
+								$("#alertQuestionCategory").css('display',
+										'inline');
+								isOk = false;
+							} else {
+								$("#alertQuestionCategory").hide();
+								$("#alertQuestionCategory").css('display',
+										'none');
+							}
+
+							var questionText = '';
+							if ($("#questionText").html() == 'Empty') {
+								$("#alertQuestionText").show();
+								$("#alertQuestionText")
+										.css('display', 'inline');
+								isOk = false;
+							} else {
+								$("#alertQuestionText").hide();
+								$("#alertQuestionText").css('display', 'none');
+								questionText = $.fn.editableutils.escape($(
+										"#questionText").html());
+							}
+
+							var answersOk = true;
+							$.each($('[data-name="questionAnswer"]'), function(
+									key, value) {
+								if ($(value).html() == 'Empty') {
+									answersOk = false;
+									$("#alertQuestionAnswers").show();
+									$("#alertQuestionAnswers").css('display',
+											'inline');
+								}
+							});
+							if (answersOk) {
+								$("#alertQuestionAnswers").hide();
+								$("#alertQuestionAnswers").css('display',
+										'none');
+							} else {
+								isOk = false;
+							}
+
+							var noCorrectAnswers = 0;
+							$.each($('[data-name="questionCorrectAnswer"]'),
+									function(key, value) {
+										if ($(value).prop('checked')) {
+											noCorrectAnswers++;
+										}
+									});
+
+							$("#alertQuestionNoAnswersSingle").css('display',
+									'none');
+							$("#alertQuestionNoAnswersMultiple").css('display',
+									'none');
+							var questionType = $("#questionCategory").attr(
+									'data-value');
+							if (questionType != undefined) {
+								if (questionType == "1") {
+									if (noCorrectAnswers != 1) {
+										$("alertQuestionNoAnswersSingle")
+												.show();
+										$("#alertQuestionNoAnswersSingle").css(
+												'display', 'inline');
+										isOk = false;
+									} else {
+										$("alertQuestionNoAnswersSingle")
+												.hide();
+										$("#alertQuestionNoAnswersSingle").css(
+												'display', 'none');
+									}
+								}
+								if (questionType == "2") {
+									if (noCorrectAnswers < 1) {
+										$("alertQuestionNoAnswersMultiple")
+												.show();
+										$("#alertQuestionNoAnswersMultiple")
+												.css('display', 'inline');
+										isOk = false;
+									} else {
+										$("alertQuestionNoAnswersMultiple")
+												.hide();
+										$("#alertQuestionNoAnswersMultiple")
+												.css('display', 'none');
+									}
+								}
+							}
+							if (isOk) {
+								$.loader({
+									className : "blue-with-image",
+									content : ''
+								});
+								var answers = [];
+								$
+										.each(
+												$('[data-name="answerDiv"]'),
+												function(key, value) {
+													var answer = {};
+													answer.isCorrect = $(
+															$(value)
+																	.find(
+																			'[data-name="questionCorrectAnswer"]'))
+															.prop('checked');
+													answer.text = $(
+															$(value)
+																	.find(
+																			'[data-name="questionAnswer"]'))
+															.html();
+													answers.push(answer);
+												});
+								var quizId = $("#quizDataName").attr(
+										'data-quizId');
+								var question = {
+									type : questionType,
+									text : questionText,
+									answers : answers,
+									quizId : quizId
+								};
+								$.ajax({
+									type : "POST",
+									url : "/question",
+									data : JSON.stringify(question),
+									contentType : "application/json",
+									success : function(data) {
+										console.log(data);
+										$("#addQuestionDiv")
+										.html(
+												'<div><button class="btn btn-success" id="addQuestion">Add a new question</button></div>');
+										QuestionAdditioner.addQuestion();
+										$.loader('close');
+										
+									},
+									error : function(xhr, ajaxOptions,
+											thrownError) {
+										console.log(xhr.status);
+										console.log(thrownError);
+										$.loader('close');
+									}
+								});
+							}
+						});
+	},
+	
+	preventForm : function() {
+		$("button").on('click', function(event) {
 			event.preventDefault();
 		});
 	}
-
 }

@@ -19,10 +19,11 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question, Key> implements
 		super(Question.class);
 	}
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Question> findByQuizId(Long quizId) {
         Query query = this.em.createQuery("select q from " + this.clasz.getName() + " q where q.quizId = :quizId" );
         query.setParameter("quizId", quizId);
-        return query.getResultList();
+		return query.getResultList();
     }
 }

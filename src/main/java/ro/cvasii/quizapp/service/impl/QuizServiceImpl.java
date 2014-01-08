@@ -79,4 +79,14 @@ public class QuizServiceImpl extends GenericServiceImpl<Quiz, Key> implements
         Quiz quiz = transformationService.dtoToQuiz(quizRequestDTO, currentUser);
         return saveOrUpdate(quiz, quiz.getId());
     }
+
+	@Override
+	@Transactional
+	public Boolean checkPassword(String quizId, String password) {
+		Quiz quiz = this.findById(quizId);
+		if(quiz.getPassword().equals(password)){
+			return true;
+		}
+		return false;
+	}
 }

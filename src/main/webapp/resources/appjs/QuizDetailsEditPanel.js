@@ -1,6 +1,9 @@
 var QuizDetailsEditPanel = {
 
-    init: function (quizData) {
+    init: function ($el, quizData) {
+    	var templateQuizDetail = $("#tpl_quizDetailsEditPanel").html();
+		$($el).html(_.template(templateQuizDetail));
+		
         $("#quizDataHeading").append(
             '<h3 class="panel-title" id="quizDataName" data-quizId="'
                 + quizData.id + '">' + quizData.name + '</h3>');
@@ -14,10 +17,11 @@ var QuizDetailsEditPanel = {
                 html += '<li data-quizCategoryId="' + value.id + '">'
                     + value.name + '</li>';
             });
-        var $el = $('#quizDataCategories');
+        
+        var $elCategories = $('#quizDataCategories');
         if (html)
             html = '<ul>' + html + '</ul>';
-        $el.html(html);
+        $elCategories.html(html);
 
         $("#quizDataBody").append('<br/>');
         if (quizData.isPrivate) {
@@ -79,7 +83,7 @@ var QuizDetailsEditPanel = {
             },
             title: 'Enter quiz name',
             success: function () {
-                console.log("ToDo save quiz name")
+             
             }
         });
     },
@@ -116,7 +120,6 @@ var QuizDetailsEditPanel = {
                     $("#quizDataIsPrivate").attr('data-quizIsPrivate', true);
                     QuizDetailsEditPanel.editPassword();
                 }
-                console.log("ToDo save isPrivate");
             }
         });
     },
@@ -165,7 +168,7 @@ var QuizDetailsEditPanel = {
                 },
                 placement: 'bottom',
                 success: function () {
-                    console.log("ToDo save quiz categories")
+                    
                 }
 
             });
@@ -180,8 +183,6 @@ var QuizDetailsEditPanel = {
                 placement: 'bottom',
                 value: $('#quizDataPassword').attr('data-value'),
                 success: function (response, newValue) {
-                    console
-                        .log('ToDo save password and verify at end is a password exists');
                     $('#quizDataPassword').attr('data-value',
                         newValue);
                 },

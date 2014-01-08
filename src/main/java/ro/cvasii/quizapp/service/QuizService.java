@@ -56,4 +56,12 @@ public interface QuizService extends GenericService<Quiz, Key> {
 	 * @return
 	 */
 	Quiz update(QuizRequestDTO quizRequestDTO, User currentUser);
+
+	/**
+	 * Verifies password for a private quiz
+	 * 
+	 * @param quizId
+	 * @return
+	 */
+	Boolean checkPassword(String quizId, String password);
 }

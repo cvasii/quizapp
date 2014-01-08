@@ -59,21 +59,30 @@ var QuizsDisplay = {
                     $td = $($el[i]);
                 }
             }
+            var quizId = $(this).attr('data-value');
             if ($($td).html() == "Yes") {
                 $("#passwordModal").modal('show');
-                $("#quizPassword").attr('data-value', $(this).attr('data-value'));
+                $("#quizPassword").attr('data-value', quizId);
                 $("#submitPassword").on('click', function(e){
-                    console.log('hidden');
-                    console.log($("#quizPassword"));
-                    var quizId = $("#quizPassword").attr('data-value');
                     var url = '/quiz/' + quizId + '/password';
+                    
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: url,
                         data: $("#quizPassword").val(),
                         contentType: "application/json",
                         success: function (data) {
                             console.log(data);
+                            if(data == false){
+                            	$("#alertWrongPassword").show('slow');
+                            }
+                            else{
+                            	$("#alertWrongPassword").hide('slow');
+                            	$("#passwordModal").modal('hide');
+                            	$('#passwordModal').on('hidden.bs.modal', function (e) {
+                                	QuizTaker.init(quizId);
+                            	});
+                            }
                             $.loader('close');
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -86,6 +95,7 @@ var QuizsDisplay = {
             }
             else{
                 $("#passwordModal").modal('hide');
+            	QuizTaker.init(quizId);
             }
 
         });

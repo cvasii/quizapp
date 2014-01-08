@@ -241,6 +241,9 @@
                 </div>
                 <div class="modal-body">
                     <label>Password:</label> <input type="password" id="quizPassword"/>
+					<div id="alertWrongPassword" style="display:none">
+                		<div class="alert alert-danger">This password is incorrect.</div>
+            		</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -251,6 +254,9 @@
     </div><!-- /.modal -->
 </script>
 
+<script type="text/html" id="tpl_quizTaker">
+    
+</script>
 
 </head>
 <body>
@@ -294,8 +300,9 @@
 <script src="resources/appjs/handleNavigation.js"></script>
 <script src="resources/appjs/createQuiz.js"></script>
 <script src="resources/appjs/addQuestions.js"></script>
-<script src="resources/appjs/quizDetails.js"></script>
-<script src="resources/appjs/quizsDisplay.js"></script>
+<script src="resources/appjs/QuizDetailsEditPanel.js"></script>
+<script src="resources/appjs/QuizsDisplay.js"></script>
+<script src="resources/appjs/QuizTaker.js"></script>
 <script>
     $(document).ready(function () {
 

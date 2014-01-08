@@ -4,11 +4,9 @@ var QuestionAdditioner = {
 
 		var template = $("#tpl_addQuestions").html();
 		$("#mainContent").html(_.template(template));
-		var templateQuizDetail = $("#tpl_quizDetailsEditPanel").html();
-		$("#addQuestions").html(_.template(templateQuizDetail));
+		QuizDetailsEditPanel.init($("#addQuestions"), quizData);
 		$("#addQuestions").append('<div class="col-sm-9" id="addQuestionDiv"></div>');
-		QuizDetailsEditPanel.init(quizData);
-
+		
 		$("#addQuestionDiv")
 				.html(
 						'<div><button class="btn btn-success" id="addQuestion">Add a new question</button></div>');

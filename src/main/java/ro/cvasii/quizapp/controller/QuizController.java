@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import ro.cvasii.quizapp.domain.Quiz;
-import ro.cvasii.quizapp.dto.QuizDTO;
+import ro.cvasii.quizapp.dto.QuizRequestDTO;
 import ro.cvasii.quizapp.service.QuizService;
 import ro.cvasii.quizapp.transformation.TransformationService;
 
@@ -41,14 +43,14 @@ public class QuizController {
 
 	@RequestMapping(value = "/quiz", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public String addQuiz(@RequestBody QuizDTO quizDTO, HttpServletRequest req,
+	public String addQuiz(@RequestBody QuizRequestDTO quizRequestDTO, HttpServletRequest req,
 			HttpServletResponse resp) throws Exception {
-		LOGGER.info(quizDTO.toString());
+		LOGGER.info(quizRequestDTO.toString());
 		UserService userService = UserServiceFactory.getUserService();
 		User currentUser = userService.getCurrentUser();
 		LOGGER.info(currentUser.toString());
 
-		Quiz quiz = quizService.save(quizDTO, currentUser);
+		Quiz quiz = quizService.save(quizRequestDTO, currentUser);
 
 		mapper.registerModule(new JodaModule());
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -60,14 +62,14 @@ public class QuizController {
 	
 	@RequestMapping(value = "/quiz/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public String saveQuiz(@RequestBody QuizDTO quizDTO, HttpServletRequest req,
+	public String saveQuiz(@RequestBody QuizRequestDTO quizRequestDTO, HttpServletRequest req,
 			HttpServletResponse resp) throws Exception {
-		LOGGER.info(quizDTO.toString());
+		LOGGER.info(quizRequestDTO.toString());
 		UserService userService = UserServiceFactory.getUserService();
 		User currentUser = userService.getCurrentUser();
 		LOGGER.info(currentUser.toString());
 
-		Quiz quiz = quizService.update(quizDTO, currentUser);
+		Quiz quiz = quizService.update(quizRequestDTO, currentUser);
 
 		mapper.registerModule(new JodaModule());
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -76,4 +78,15 @@ public class QuizController {
 
 		return mapper.writeValueAsString(transformationService.quizToDTO(quiz));
 	}
+
+    @RequestMapping(value = "/quizs", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public String getAllQuizs() throws JsonProcessingException {
+        mapper.registerModule(new JodaModule());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        mapper.setDateFormat(df);
+        mapper.getSerializationConfig().with(df);
+
+        return mapper.writeValueAsString(quizService.findAllDTO());
+    }
 }

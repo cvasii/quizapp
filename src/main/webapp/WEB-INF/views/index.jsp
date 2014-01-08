@@ -205,9 +205,52 @@
 			<div id="alertQuizNoPassword" style="display:none">
 				<div class="alert alert-danger">Please enter the password.</div>
 			</div>
+            <div id="alertQuizNoQuestions" style="display:none">
+                <div class="alert alert-danger">This quiz has no questions.</div>
+            </div>
             <button class="btn btn-success" id="saveQuiz">Save quiz</button>
         </div>
 </script>
+
+<script type="text/html" id="tpl_quizsDisplayTable">
+    <h3>All Quizs</h3>
+    <div class="bs-quizs">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Quiz Name</td>
+                        <td>Categories</td>
+                        <td>Private</td>
+                        <td>Quiz Author</td>
+                        <td>Date Created</td>
+                        <td>No. Questions</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        <div>
+    </div>
+    <div class="modal fade" id="passwordModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Enter the password for this quiz</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Password:</label> <input type="password" id="quizPassword"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitPassword">Submit</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</script>
+
 
 </head>
 <body>
@@ -252,6 +295,7 @@
 <script src="resources/appjs/createQuiz.js"></script>
 <script src="resources/appjs/addQuestions.js"></script>
 <script src="resources/appjs/quizDetails.js"></script>
+<script src="resources/appjs/quizsDisplay.js"></script>
 <script>
     $(document).ready(function () {
 

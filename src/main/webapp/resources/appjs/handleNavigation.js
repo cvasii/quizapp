@@ -25,6 +25,9 @@ var NavigationHandler = {
 						if (dataName === "createQuiz") {
 							QuizCreator.init();
 						}
+                        if(dataName === "allQuizs"){
+                            QuizsDisplay.init();
+                        }
 					}
 
 				});

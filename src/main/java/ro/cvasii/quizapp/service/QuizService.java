@@ -6,7 +6,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 
 import ro.cvasii.quizapp.domain.Quiz;
-import ro.cvasii.quizapp.dto.QuizDTO;
+import ro.cvasii.quizapp.dto.QuizRequestDTO;
 import ro.cvasii.quizapp.dto.QuizFullDTO;
 import ro.cvasii.quizapp.generic.service.GenericService;
 
@@ -44,16 +44,16 @@ public interface QuizService extends GenericService<Quiz, Key> {
 	/**
 	 * Saves a quiz from a dto
 	 * 
-	 * @param quizDTO
+	 * @param quizRequestDTO
 	 * @return
 	 */
-	Quiz save(QuizDTO quizDTO, User currentUser);
+	Quiz save(QuizRequestDTO quizRequestDTO, User currentUser);
 
 	/**
 	 * Updates a quiz from dto
 	 * 
-	 * @param quizDTO
+	 * @param quizRequestDTO
 	 * @return
 	 */
-	Quiz update(QuizDTO quizDTO, User currentUser);
+	Quiz update(QuizRequestDTO quizRequestDTO, User currentUser);
 }

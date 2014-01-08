@@ -5,6 +5,8 @@ import ro.cvasii.quizapp.domain.Question;
 import ro.cvasii.quizapp.dto.QuestionDTO;
 import ro.cvasii.quizapp.generic.service.GenericService;
 
+import java.util.List;
+
 /**
  * Defining service layer methods for Question
  * 
@@ -16,9 +18,10 @@ public interface QuestionService extends GenericService<Question, Key> {
 	/**
 	 * Saves a question from a dto
 	 * 
-	 * @param quizDTO
+	 * @param questionDTO
 	 * @return
 	 */
 	Question save(QuestionDTO questionDTO);
-	
+
+    List<Question> findByQuizId(String quizId);
 }

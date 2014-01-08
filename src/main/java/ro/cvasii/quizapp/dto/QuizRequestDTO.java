@@ -8,7 +8,7 @@ import java.util.List;
  * @author comy
  * 
  */
-public class QuizDTO {
+public class QuizRequestDTO {
 
 	private Long id;
 	private String name;

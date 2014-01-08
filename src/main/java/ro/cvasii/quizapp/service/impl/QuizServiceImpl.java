@@ -15,71 +15,68 @@ import com.google.appengine.api.users.User;
 import ro.cvasii.quizapp.dao.QuizDAO;
 import ro.cvasii.quizapp.domain.Quiz;
 import ro.cvasii.quizapp.domain.QuizCategory;
-import ro.cvasii.quizapp.dto.QuizDTO;
+import ro.cvasii.quizapp.dto.QuizRequestDTO;
 import ro.cvasii.quizapp.dto.QuizFullDTO;
 import ro.cvasii.quizapp.generic.service.GenericServiceImpl;
-import ro.cvasii.quizapp.service.QuizAppUserService;
 import ro.cvasii.quizapp.service.QuizService;
 import ro.cvasii.quizapp.transformation.TransformationService;
 
 @Service
 public class QuizServiceImpl extends GenericServiceImpl<Quiz, Key> implements
-		QuizService {
+        QuizService {
 
-	private final static Logger LOGGER = LoggerFactory
-			.getLogger(QuizServiceImpl.class);
+    private final static Logger LOGGER = LoggerFactory
+            .getLogger(QuizServiceImpl.class);
 
-	private QuizDAO quizDAO;
+    private QuizDAO quizDAO;
 
-	@Autowired
-	QuizAppUserService appUserService;
 
-	@Autowired
-	TransformationService transformationService;
+    @Autowired
+    private TransformationService transformationService;
 
-	@Autowired
-	public QuizServiceImpl(QuizDAO quizDAO) {
-		super(quizDAO);
-		this.quizDAO = quizDAO;
-	}
+    @Autowired
+    public QuizServiceImpl(QuizDAO quizDAO) {
+        super(quizDAO);
+        this.quizDAO = quizDAO;
+    }
 
-	@Override
-	@Transactional
-	public Quiz findById(String id) {
-		Key key = KeyFactory.createKey(Quiz.class.getSimpleName(),
-				Long.parseLong(id));
-		LOGGER.info(key.toString());
-		return quizDAO.findById(key);
-	}
+    @Override
+    @Transactional
+    public Quiz findById(String id) {
+        Key key = KeyFactory.createKey(Quiz.class.getSimpleName(),
+                Long.parseLong(id));
+        LOGGER.info(key.toString());
+        return quizDAO.findById(key);
+    }
 
-	@Override
-	@Transactional
-	public QuizFullDTO findDTOById(String id) {
-		Key key = KeyFactory.createKey(QuizCategory.class.getSimpleName(),
-				Long.parseLong(id));
-		LOGGER.info(key.toString());
-		Quiz quiz = quizDAO.findById(key);
-		return transformationService.quizToDTO(quiz);
-	}
+    @Override
+    @Transactional
+    public QuizFullDTO findDTOById(String id) {
+        Key key = KeyFactory.createKey(QuizCategory.class.getSimpleName(),
+                Long.parseLong(id));
+        LOGGER.info(key.toString());
+        Quiz quiz = quizDAO.findById(key);
+        return transformationService.quizToDTO(quiz);
+    }
 
-	@Override
-	@Transactional
-	public List<QuizFullDTO> findAllDTO() {
-		List<Quiz> findAll = findAll();
-		return transformationService.bulkQuizToDTO(findAll);
-	}
+    @Override
+    @Transactional
+    public List<QuizFullDTO> findAllDTO() {
+        List<Quiz> findAll = findAll();
+        return transformationService.bulkQuizToDTO(findAll);
+    }
 
-	@Override
-	@Transactional
-	public Quiz save(QuizDTO quizDTO, User currentUser) {
-		Quiz quiz = transformationService.dtoToQuiz(quizDTO, currentUser);
-		return save(quiz);
-	}
+    @Override
+    @Transactional
+    public Quiz save(QuizRequestDTO quizRequestDTO, User currentUser) {
+        Quiz quiz = transformationService.dtoToQuiz(quizRequestDTO, currentUser);
+        return save(quiz);
+    }
 
-	@Override
-	@Transactional
-	public Quiz update(QuizDTO quizDTO, User currentUser) {
-		Quiz quiz = transformationService.dtoToQuiz(quizDTO, currentUser);
-		return saveOrUpdate(quiz, quiz.getId());
-	}
+    @Override
+    @Transactional
+    public Quiz update(QuizRequestDTO quizRequestDTO, User currentUser) {
+        Quiz quiz = transformationService.dtoToQuiz(quizRequestDTO, currentUser);
+        return saveOrUpdate(quiz, quiz.getId());
+    }
 }

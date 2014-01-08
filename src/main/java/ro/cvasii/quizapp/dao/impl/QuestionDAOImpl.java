@@ -8,6 +8,9 @@ import ro.cvasii.quizapp.dao.QuestionDAO;
 import ro.cvasii.quizapp.domain.Question;
 import ro.cvasii.quizapp.generic.dao.GenericDAOImpl;
 
+import javax.persistence.Query;
+import java.util.List;
+
 @Repository
 public class QuestionDAOImpl extends GenericDAOImpl<Question, Key> implements
 		QuestionDAO {
@@ -15,4 +18,11 @@ public class QuestionDAOImpl extends GenericDAOImpl<Question, Key> implements
 	public QuestionDAOImpl() {
 		super(Question.class);
 	}
+
+    @Override
+    public List<Question> findByQuizId(Long quizId) {
+        Query query = this.em.createQuery("select q from " + this.clasz.getName() + " q where q.quizId = :quizId" );
+        query.setParameter("quizId", quizId);
+        return query.getResultList();
+    }
 }

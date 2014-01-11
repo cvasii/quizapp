@@ -22,7 +22,7 @@ public class DataSimulator {
 
 	@PostConstruct
 	public void postContruct() {
-		this.addQuizCategories();
+		//this.addQuizCategories();
 	}
 
 	/**

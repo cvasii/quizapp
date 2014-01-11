@@ -67,6 +67,9 @@ var QuizCreator = {
 					$("#alertQuizPassword").hide();
 				}
 			}
+			else{
+				password = null;
+			}
 
 			var categoriesOptions = $("#quizCategorySelected option:checked");
 			if (categoriesOptions.length == 0) {

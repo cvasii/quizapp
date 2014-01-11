@@ -4,7 +4,19 @@
     <datastore-index kind="Quiz" ancestor="true">
         <property name="id" direction="asc"/>
     </datastore-index>
-    <datastore-index kind="User" ancestor="true">
+    <datastore-index kind="QuizAppUser" ancestor="true">
+        <property name="id" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="Answer" ancestor="true">
+        <property name="id" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="Question" ancestor="true">
+        <property name="id" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="QuizAnswer" ancestor="true">
+        <property name="id" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="QuizCategory" ancestor="true">
         <property name="id" direction="asc"/>
     </datastore-index>
 </datastore-indexes>

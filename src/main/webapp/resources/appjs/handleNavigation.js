@@ -28,6 +28,9 @@ var NavigationHandler = {
                         if(dataName === "allQuizs"){
                             QuizsDisplay.init();
                         }
+                        if(dataName === "myResults"){
+                            MyResultsDisplay.init();
+                        }
 					}
 
 				});

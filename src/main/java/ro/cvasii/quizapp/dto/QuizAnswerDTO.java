@@ -4,15 +4,31 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-import com.google.appengine.api.datastore.Key;
-
 public class QuizAnswerDTO {
 
 	private Long id;
+	private QuizFullDTO quiz;
 	private DateTime dateTaken;
-	private Key userId;
-	private Long quizId;
+	private QuizAppUserDTO user;
 	private List<QuestionAnswerDTO> questionAnswers;
+	private Double score;
+
+	
+	public QuizFullDTO getQuiz() {
+		return quiz;
+	}
+
+	public void setQuiz(QuizFullDTO quiz) {
+		this.quiz = quiz;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
 
 	public Long getId() {
 		return id;
@@ -30,21 +46,14 @@ public class QuizAnswerDTO {
 		this.dateTaken = dateTaken;
 	}
 
-	public Key getUserId() {
-		return userId;
+	public QuizAppUserDTO getUser() {
+		return user;
 	}
 
-	public void setUserId(Key userId) {
-		this.userId = userId;
+	public void setUser(QuizAppUserDTO user) {
+		this.user = user;
 	}
 
-	public Long getQuizId() {
-		return quizId;
-	}
-
-	public void setQuizId(Long quizId) {
-		this.quizId = quizId;
-	}
 
 	public List<QuestionAnswerDTO> getQuestionAnswers() {
 		return questionAnswers;

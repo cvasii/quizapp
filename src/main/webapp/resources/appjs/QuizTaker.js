@@ -66,10 +66,11 @@ var QuizTaker = {
 							'<div class="alert alert-danger">Please select an aswer for this question.</div></div>';
 							html += '</div>';
 						});
-		html += '<div class="col-sm-9">';
+		html += '<div class="row" >';
+		html += '<div class="col-sm-9" id="buttons">';
 		html += '<button class="btn btn-success" id="submitQuiz">Submit quiz</button> ';
 		html += '<button class="btn btn-default" id="cancelQuiz">Cancel</button>';
-		html +='</div>';
+		html +='</div></div>';
 		$el.html(html);
 		QuizTaker.submitQuiz();
 		QuizTaker.cancelQuiz();
@@ -79,16 +80,15 @@ var QuizTaker = {
 		$("#submitQuiz").on('click', function(){
 			var isOk = true;
 			var quizResponse = new Object();
-			quizResponse.quizId = QuizTaker.id;
+			var quiz = new Object();
+			quiz.id = QuizTaker.id;
+			quizResponse.quiz = quiz;
 			var questionAnswers = [];
 			$.each($('[data-name="question"]'), function(key, value){
 				var questionId= $(this).attr('data-value');
 				var checked = $(this).find('input:checked');
 				var allAnswers = $(this).find('input');
 				var selectedAnswers = QuizTaker.getAnswerNo(checked, allAnswers);
-				//$.each($($(this).find('input:checked')).parent().parent().find($('span')), function(key, value){
-				//	selectedAnswers.push($(value).html());
-				//})
 				if(selectedAnswers.length == 0){
 					$(this).parent().find($('[data-name="alertNoAnswer"]')).show('slow');
 					isOk = false;
@@ -115,6 +115,10 @@ var QuizTaker = {
                     contentType: "application/json",
                     success: function (data) {
                         console.log(data);
+                        $("#mainContent").prepend('<div class="row" id="quizResult">Your result is ' + data.score*100 + '%. Congratulations!</div>')
+                        $("#mainContent").find($("#buttons")).empty();
+                        $("#mainContent").find($("#buttons")).append('<button class="btn btn-success" id="retakeQuiz">Retake quiz</button> ');
+                        QuizTaker.retakeQuiz();
                         $.loader('close');
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -146,7 +150,13 @@ var QuizTaker = {
 		});
 		return selectedAnswers;
 		
-	}
+	},
+	
+	retakeQuiz: function(){
+		$("#retakeQuiz").on('click', function(){
+			QuizTaker.init(QuizTaker.id);
+		});
+	},
 	
 	
 }

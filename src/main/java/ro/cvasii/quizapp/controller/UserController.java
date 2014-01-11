@@ -44,7 +44,7 @@ public class UserController {
 		response.setStatus(HttpStatus.OK.value());
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JodaModule());
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		mapper.setDateFormat(df);
 		mapper.getSerializationConfig().with(df);
 		return mapper.writeValueAsString(allUsers);

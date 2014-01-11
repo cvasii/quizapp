@@ -255,9 +255,48 @@
 </script>
 
 <script type="text/html" id="tpl_quizTaker">
-    
+	<div class="row" id="quizResult">
+
+	</div>
 </script>
 
+<script type="text/html" id="tpl_myResultsDisplayTable">
+    <h3>My Results</h3>
+    <div class="bs-quizs">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Quiz Name</td>
+                        <td>Score</td>
+                        <td>Date taken</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        <div>
+    </div>
+    <div class="modal fade" id="passwordModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Enter the password for this quiz</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Password:</label> <input type="password" id="quizPassword"/>
+					<div id="alertWrongPassword" style="display:none">
+                		<div class="alert alert-danger">This password is incorrect.</div>
+            		</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitPassword">Submit</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</script>
 </head>
 <body>
 <!-- Fixed navbar -->
@@ -276,7 +315,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="create" data-name="createQuiz">Create a new
                     quiz</a></li>
-                <li><a href="quizs" data-name="myQuizs">My own</a></li>
+                <!-- <li><a href="quizs" data-name="myQuizs">My own</a></li> -->
                 <li><a href="all" data-name="allQuizs">All quizs</a></li>
                 <li><a href="results" data-name="myResults">My results</a></li>
             </ul>
@@ -303,6 +342,7 @@
 <script src="resources/appjs/QuizDetailsEditPanel.js"></script>
 <script src="resources/appjs/QuizsDisplay.js"></script>
 <script src="resources/appjs/QuizTaker.js"></script>
+<script src="resources/appjs/MyResultsDisplay.js"></script>
 <script>
     $(document).ready(function () {
 

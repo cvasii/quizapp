@@ -26,7 +26,7 @@ public class MailSender {
 	private String senderEmailAddress = "cosminradu.vasii@gmail.com";
 	private String senderPersonal = "Quiz App";
 	private String mailSubjectTakeQuiz = "Result From Quiz App";
-	private String mailTakeQuizTemplate = "Dear Mr./Ms. {0},\n\n On {1}, the user {2} has taken the quiz \'{3}\', which you have created and received a score of {4}%. \n\n Kind regards, \n The Quiz App team";
+	private String mailTakeQuizTemplate = "Dear Mr./Ms. {0},\n\n On {1}, the user {2} has taken the quiz {3}, which you have created and received a score of {4}%. \n\n Kind regards, \n The Quiz App team";
 
 	public void sendEmailToOwnerAfterTakingQuiz(QuizAppUser recipient,
 			Date dateTaken, String quizName, Double score)

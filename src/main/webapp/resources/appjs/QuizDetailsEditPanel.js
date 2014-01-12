@@ -1,9 +1,12 @@
 var QuizDetailsEditPanel = {
+		
+	passwordChanged: false,
 
     init: function ($el, quizData) {
     	var templateQuizDetail = $("#tpl_quizDetailsEditPanel").html();
 		$($el).html(_.template(templateQuizDetail));
 		
+		QuizDetailsEditPanel.passwordChanged = false;
         $("#quizDataHeading").append(
             '<h3 class="panel-title" id="quizDataName" data-quizId="'
                 + quizData.id + '">' + quizData.name + '</h3>');
@@ -24,6 +27,18 @@ var QuizDetailsEditPanel = {
         $elCategories.html(html);
 
         $("#quizDataBody").append('<br/>');
+        $("#quizDataBody").append('<p>Notify on email</p>');
+        if (quizData.notify) {
+            $("#quizDataBody").append(
+                '<p id="quizDataNotify" data-quizNotify="'
+                    + quizData.notify + '">Yes</p>');
+        } else {
+            $("#quizDataBody").append(
+                    '<p id="quizDataNotify" data-quizNotify="'
+                        + quizData.notify + '">No</p>');
+        }
+
+        $("#quizDataBody").append('<br/>');
         if (quizData.isPrivate) {
             $("#quizDataBody").append(
                 '<p id="quizDataIsPrivate" data-quizIsPrivate="'
@@ -38,17 +53,18 @@ var QuizDetailsEditPanel = {
         $("#quizDataBody").append('<p>Password</p>');
         if (quizData.isPrivate) {
             $("#quizDataBody").append(
-                '<p id="quizDataPassword" data-value=' + quizData.password
+                '<p id="quizDataPassword" data-value="*******"'
                     + '>********</p></div>');
             QuizDetailsEditPanel.editPassword();
         } else {
             $("#quizDataBody").append(
-                '<p id="quizDataPassword" data-value=' + quizData.password
+                '<p id="quizDataPassword"'
                     + '>None</p></div>');
         }
 
         this.editQuizName();
         this.editIsPrivate();
+        this.editNotify();
 
         var sourceData = [];
         $.ajax({
@@ -87,6 +103,38 @@ var QuizDetailsEditPanel = {
             }
         });
     },
+    
+    editNotify: function () {
+        var notify = $("#quizDataNotify").attr('data-quizNotify');
+        var currentValue;
+        if (notify == "true") {
+            currentValue = 1;
+        } else {
+            currentValue = 0;
+        }
+        $("#quizDataNotify").editable({
+            type: 'select',
+            value: currentValue,
+            source: [
+                {
+                    value: 0,
+                    text: 'No'
+                },
+                {
+                    value: 1,
+                    text: 'Yes'
+                }
+            ],
+            placement: 'bottom',
+            success: function (response, newValue) {
+                if (newValue == 0) {
+                    $("#quizDataNotify").attr('data-quizNotify', false);
+                } else if (newValue == 1) {
+                    $("#quizDataNotify").attr('data-quizNotify', true);
+                }
+            }
+        });
+    },
 
     editIsPrivate: function () {
         var isPrivate = $("#quizDataIsPrivate").attr('data-quizIsPrivate');
@@ -115,7 +163,7 @@ var QuizDetailsEditPanel = {
                     $("#quizDataIsPrivate").attr('data-quizIsPrivate', false);
                     $('#quizDataPassword').editable('destroy');
                     $('#quizDataPassword').html('None');
-                    $('#quizDataPassword').attr('data-value', '');
+                    $("#alertQuizNoPassword").hide('slow');
                 } else if (newValue == 1) {
                     $("#quizDataIsPrivate").attr('data-quizIsPrivate', true);
                     QuizDetailsEditPanel.editPassword();
@@ -181,10 +229,11 @@ var QuizDetailsEditPanel = {
                 type: 'password',
                 title: 'Change password',
                 placement: 'bottom',
-                value: $('#quizDataPassword').attr('data-value'),
+                value: $("#quizDataPassword").attr('data-value'),
                 success: function (response, newValue) {
                     $('#quizDataPassword').attr('data-value',
                         newValue);
+                    QuizDetailsEditPanel.passwordChanged = true;
                 },
                 display: function (value, sourceData) {
                     var $el = $('#quizDataPassword'), html = '';
@@ -212,13 +261,14 @@ var QuizDetailsEditPanel = {
             var quizId = $("#quizDataName").attr('data-quizId');
             var isPrivate = $("#quizDataIsPrivate").attr('data-quizIsPrivate');
             var password = $("#quizDataPassword").attr('data-value');
+            var notify = $("#quizDataNotify").attr('data-quizNotify')
 
             var categories = [];
             $.each($('#quizDataCategories li'), function (key, value) {
                 categories.push($(value).attr('data-quizCategoryId'));
             });
 
-            if (isPrivate == "true" && password == '') {
+            if (isPrivate == "true" && password == undefined) {
                 $("#alertQuizNoPassword").show('slow');
                 isOk = false;
             }
@@ -231,6 +281,13 @@ var QuizDetailsEditPanel = {
             }
             else {
                 isPrivate = false;
+            }
+            
+            if (notify == "true") {
+            	notify = true;
+            }
+            else {
+            	notify = false;
             }
 
             if (isOk) {
@@ -257,7 +314,11 @@ var QuizDetailsEditPanel = {
                             quiz.id = quizId;
                             quiz.isPrivate = isPrivate;
                             quiz.password = password;
+                            quiz.passwordChanged = QuizDetailsEditPanel.passwordChanged;
+                            quiz.notify = notify;
                             quiz = JSON.stringify(quiz);
+                            console.log("Sending to update quiz");
+                            console.log(quiz);
                             var url = '/quiz/' + quizId;
                             $.ajax({
                                 type: "PUT",

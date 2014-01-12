@@ -1,6 +1,9 @@
 package ro.cvasii.quizapp.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import com.google.appengine.api.datastore.Key;
 import ro.cvasii.quizapp.domain.QuizAnswer;
@@ -19,8 +22,10 @@ public interface QuizAnswerService extends GenericService<QuizAnswer, Key> {
 	 * 
 	 * @param quizAnswer
 	 * @return
+	 * @throws MessagingException
+	 * @throws UnsupportedEncodingException
 	 */
-	QuizAnswer evaluateAndSave(QuizAnswer quizAnswer);
+	QuizAnswer evaluateAndSave(QuizAnswer quizAnswer) throws UnsupportedEncodingException, MessagingException;
 
 	/**
 	 * Finds all answers of a user

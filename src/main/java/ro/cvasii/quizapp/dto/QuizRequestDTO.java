@@ -15,6 +15,24 @@ public class QuizRequestDTO {
 	private List<Long> categories;
 	private Boolean isPrivate;
 	private String password;
+	private Boolean notify;
+	private Boolean passwordChanged;
+
+	public Boolean getPasswordChanged() {
+		return passwordChanged;
+	}
+
+	public void setPasswordChanged(Boolean passwordChanged) {
+		this.passwordChanged = passwordChanged;
+	}
+
+	public Boolean getNotify() {
+		return notify;
+	}
+
+	public void setNotify(Boolean notify) {
+		this.notify = notify;
+	}
 
 	public Long getId() {
 		return id;

@@ -3,8 +3,6 @@ package ro.cvasii.quizapp.service;
 import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
-
 import ro.cvasii.quizapp.domain.Quiz;
 import ro.cvasii.quizapp.dto.QuizRequestDTO;
 import ro.cvasii.quizapp.dto.QuizFullDTO;
@@ -47,7 +45,7 @@ public interface QuizService extends GenericService<Quiz, Key> {
 	 * @param quizRequestDTO
 	 * @return
 	 */
-	Quiz save(QuizRequestDTO quizRequestDTO, User currentUser);
+	Quiz save(QuizRequestDTO quizRequestDTO);
 
 	/**
 	 * Updates a quiz from dto
@@ -55,7 +53,7 @@ public interface QuizService extends GenericService<Quiz, Key> {
 	 * @param quizRequestDTO
 	 * @return
 	 */
-	Quiz update(QuizRequestDTO quizRequestDTO, User currentUser);
+	Quiz update(QuizRequestDTO quizRequestDTO);
 
 	/**
 	 * Verifies password for a private quiz

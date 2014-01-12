@@ -75,9 +75,9 @@ public class TransformationService {
 		quizDTO.setId(quiz.getId().getId());
 		quizDTO.setName(quiz.getName());
 		quizDTO.setIsPrivate(quiz.getIsPrivate());
-		quizDTO.setPassword(quiz.getPassword());
 		quizDTO.setDateCreated(new DateTime(quiz.getDateCreated()));
 		quizDTO.setNoQuestions(quiz.getNoQuestions());
+		quizDTO.setNotify(quiz.getNotify());
 		List<QuizCategoryDTO> categories = new ArrayList<QuizCategoryDTO>();
 		for (Key categoryId : quiz.getCategories()) {
 			QuizCategory quizCategory = categoryService.findById(categoryId);
@@ -174,22 +174,29 @@ public class TransformationService {
 		return questionDTOs;
 	}
 
-	public Quiz dtoToQuiz(QuizRequestDTO quizRequestDTO, User currentUser) {
+	public Quiz dtoToQuiz(QuizRequestDTO quizRequestDTO) {
 		Quiz quiz = new Quiz();
 		quiz.setName(quizRequestDTO.getName());
-		quiz.setPassword(quizRequestDTO.getPassword());
 		quiz.setIsPrivate(quizRequestDTO.getIsPrivate());
+		if (quiz.getIsPrivate()) {
+			quiz.setPassword(quizRequestDTO.getPassword());
+			if (quizRequestDTO.getPasswordChanged() != null) {
+				if (!quizRequestDTO.getPasswordChanged()) {
+					quiz.setPassword(quizService.findById(
+							String.valueOf(quizRequestDTO.getId()))
+							.getPassword());
+				}
+			}
+		} else {
+			quiz.setPassword(null);
+		}
+		quiz.setNotify(quizRequestDTO.getNotify());
+		quiz.setDateCreated(DateTime.now().toDate());
 
 		if (quizRequestDTO.getId() != null) {
 			Key quizId = KeyFactory.createKey(Quiz.class.getSimpleName(),
 					quizRequestDTO.getId());
 			quiz.setId(quizId);
-		}
-
-		quiz.setNoQuestions(0);
-		if (quiz.getId() != null) {
-			quiz.setNoQuestions(quizService.findById(quiz.getId())
-					.getNoQuestions());
 		}
 
 		List<Key> categories = new ArrayList<Key>();
@@ -210,6 +217,10 @@ public class TransformationService {
 		}
 		quiz.setQuestions(questions);
 
+		quiz.setNoQuestions(questions.size());
+
+		UserService userService = UserServiceFactory.getUserService();
+		User currentUser = userService.getCurrentUser();
 		QuizAppUser user = appUserService.findByEmailAndNickname(
 				currentUser.getEmail(), currentUser.getNickname());
 		quiz.setUser(user.getId());

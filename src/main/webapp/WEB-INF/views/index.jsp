@@ -79,6 +79,18 @@
                 </div>
             </div>
 
+			<div class="form-group">
+                <label for="quizNotifyCheckbox" class="col-sm-2 control-label">Notify me by email when someone takes this quiz</label>
+
+                <div class="col-sm-2">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="quizNotifyCheckbox">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="quizPrivateCheckbox" class="col-sm-2 control-label">Private</label>
 

@@ -1,8 +1,10 @@
 package ro.cvasii.quizapp.service.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -20,10 +22,14 @@ import ro.cvasii.quizapp.dao.QuestionDAO;
 import ro.cvasii.quizapp.dao.QuizAnswerDAO;
 import ro.cvasii.quizapp.domain.Question;
 import ro.cvasii.quizapp.domain.QuestionAnswer;
+import ro.cvasii.quizapp.domain.Quiz;
 import ro.cvasii.quizapp.domain.QuizAnswer;
+import ro.cvasii.quizapp.domain.QuizAppUser;
 import ro.cvasii.quizapp.generic.service.GenericServiceImpl;
 import ro.cvasii.quizapp.service.QuizAnswerService;
 import ro.cvasii.quizapp.service.QuizAppUserService;
+import ro.cvasii.quizapp.service.QuizService;
+import ro.cvasii.quizapp.util.MailSender;
 
 @Service
 public class QuizAnswerServiceImpl extends GenericServiceImpl<QuizAnswer, Key>
@@ -41,6 +47,12 @@ public class QuizAnswerServiceImpl extends GenericServiceImpl<QuizAnswer, Key>
 	private QuizAppUserService quizAppUserService;
 
 	@Autowired
+	private MailSender mailSender;
+
+	@Autowired
+	private QuizService quizService;
+
+	@Autowired
 	public QuizAnswerServiceImpl(QuizAnswerDAO quizAnswerDAO) {
 		super(quizAnswerDAO);
 		this.quizAnswerDAO = quizAnswerDAO;
@@ -48,7 +60,8 @@ public class QuizAnswerServiceImpl extends GenericServiceImpl<QuizAnswer, Key>
 
 	@Override
 	@Transactional
-	public QuizAnswer evaluateAndSave(QuizAnswer quizAnswer) {
+	public QuizAnswer evaluateAndSave(QuizAnswer quizAnswer)
+			throws UnsupportedEncodingException, MessagingException {
 		List<QuestionAnswer> questionAnswers = quizAnswer.getQuestionAnswers();
 		Integer correctQuestionsAnswered = 0;
 		for (QuestionAnswer questionAnswer : questionAnswers) {
@@ -95,7 +108,15 @@ public class QuizAnswerServiceImpl extends GenericServiceImpl<QuizAnswer, Key>
 		LOGGER.info(correctQuestionsAnswered + "/" + questionAnswers.size()
 				+ "=" + score);
 		quizAnswer.setScore(score);
-		return quizAnswerDAO.insert(quizAnswer);
+		quizAnswer = quizAnswerDAO.insert(quizAnswer);
+		Quiz quiz = quizService.findById(quizAnswer.getQuiz());
+		if (quiz.getNotify()) {
+			QuizAppUser quizAppUser = quizAppUserService.findById(quiz
+					.getUser());
+			mailSender.sendEmailToOwnerAfterTakingQuiz(quizAppUser,
+					quizAnswer.getDateTaken(), quiz.getName(), score);
+		}
+		return quizAnswer;
 	}
 
 	@Override

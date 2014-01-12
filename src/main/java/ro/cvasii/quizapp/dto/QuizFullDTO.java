@@ -6,96 +6,96 @@ import org.joda.time.DateTime;
 
 /**
  * Quiz dto class with more details
- *
+ * 
  * @author comy
  */
 public class QuizFullDTO {
 
-    private Long id;
-    private QuizAppUserDTO user;
-    private String name;
-    private List<QuizCategoryDTO> categories;
-    private Boolean isPrivate;
-    private String password;
-    private DateTime dateCreated;
-    private Integer noQuestions;
-    private List<QuestionDTO> questions;
+	private Long id;
+	private QuizAppUserDTO user;
+	private String name;
+	private List<QuizCategoryDTO> categories;
+	private Boolean isPrivate;
+	private DateTime dateCreated;
+	private Integer noQuestions;
+	private List<QuestionDTO> questions;
+	private Boolean notify;
 
-    public Integer getNoQuestions() {
-        return noQuestions;
-    }
+	public Boolean getNotify() {
+		return notify;
+	}
 
-    public void setNoQuestions(Integer noQuestions) {
-        this.noQuestions = noQuestions;
-    }
+	public void setNotify(Boolean notify) {
+		this.notify = notify;
+	}
 
-    public List<QuestionDTO> getQuestions() {
-        return questions;
-    }
+	public Integer getNoQuestions() {
+		return noQuestions;
+	}
 
-    public void setQuestions(List<QuestionDTO> questions) {
-        this.questions = questions;
-    }
+	public void setNoQuestions(Integer noQuestions) {
+		this.noQuestions = noQuestions;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public List<QuestionDTO> getQuestions() {
+		return questions;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setQuestions(List<QuestionDTO> questions) {
+		this.questions = questions;
+	}
 
-    public QuizAppUserDTO getUser() {
-        return user;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setUser(QuizAppUserDTO user) {
-        this.user = user;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public QuizAppUserDTO getUser() {
+		return user;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setUser(QuizAppUserDTO user) {
+		this.user = user;
+	}
 
-    public List<QuizCategoryDTO> getCategories() {
-        return categories;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setCategories(List<QuizCategoryDTO> categories) {
-        this.categories = categories;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
+	public List<QuizCategoryDTO> getCategories() {
+		return categories;
+	}
 
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
+	public void setCategories(List<QuizCategoryDTO> categories) {
+		this.categories = categories;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public Boolean getIsPrivate() {
+		return isPrivate;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setIsPrivate(Boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
 
-    public DateTime getDateCreated() {
-        return dateCreated;
-    }
+	public DateTime getDateCreated() {
+		return dateCreated;
+	}
 
-    public void setDateCreated(DateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
+	public void setDateCreated(DateTime dateCreated) {
+		this.dateCreated = dateCreated;
+	}
 
-    @Override
-    public String toString() {
-        return this.name + " " + this.password + " " + this.isPrivate;
-    }
+	@Override
+	public String toString() {
+		return this.name + " " + this.isPrivate;
+	}
 
 }

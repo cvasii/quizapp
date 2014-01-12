@@ -61,7 +61,7 @@ public class QuizController {
 		User currentUser = userService.getCurrentUser();
 		LOGGER.info(currentUser.toString());
 
-		Quiz quiz = quizService.save(quizRequestDTO, currentUser);
+		Quiz quiz = quizService.save(quizRequestDTO);
 
 		return mapper.writeValueAsString(transformationService.quizToDTO(quiz));
 	}
@@ -75,7 +75,7 @@ public class QuizController {
 		User currentUser = userService.getCurrentUser();
 		LOGGER.info(currentUser.toString());
 
-		Quiz quiz = quizService.update(quizRequestDTO, currentUser);
+		Quiz quiz = quizService.update(quizRequestDTO);
 
 		return mapper.writeValueAsString(transformationService.quizToDTO(quiz));
 	}

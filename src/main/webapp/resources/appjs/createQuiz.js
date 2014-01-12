@@ -70,6 +70,8 @@ var QuizCreator = {
 			else{
 				password = null;
 			}
+			
+			var isCheckedNotify = $("#quizNotifyCheckbox").prop('checked');
 
 			var categoriesOptions = $("#quizCategorySelected option:checked");
 			if (categoriesOptions.length == 0) {
@@ -93,7 +95,10 @@ var QuizCreator = {
 				quiz.categories = categories;
 				quiz.isPrivate = isChecked;
 				quiz.password = password;
+				quiz.notify = isCheckedNotify;
 				quiz = JSON.stringify(quiz);
+				console.log("Sending to save quiz");
+				console.log(quiz);
 				$.ajax({
 					type : "POST",
 					url : "/quiz",

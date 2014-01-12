@@ -12,82 +12,97 @@ import ro.cvasii.quizapp.generic.domain.QuizAppEntity;
 @Entity
 public class Quiz extends QuizAppEntity {
 
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String name;
-    private List<Key> categories;
-    private List<Key> questions;
-    private Boolean isPrivate;
-    private String password;
-    private Key user;
-    private Date dateCreated;
-    private Integer noQuestions;
+	private String name;
+	private List<Key> categories;
+	private List<Key> questions;
+	private Boolean isPrivate;
+	private String password;
+	private Key user;
+	private Date dateCreated;
+	private Integer noQuestions;
+	private Boolean notify;
 
-    public Integer getNoQuestions() {
-        return noQuestions;
-    }
+	public Boolean getNotify() {
+		return notify;
+	}
 
-    public void setNoQuestions(Integer noQuestions) {
-        this.noQuestions = noQuestions;
-    }
+	public void setNotify(Boolean notify) {
+		this.notify = notify;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Integer getNoQuestions() {
+		return noQuestions;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setNoQuestions(Integer noQuestions) {
+		this.noQuestions = noQuestions;
+	}
 
-    public List<Key> getCategories() {
-        return categories;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setCategories(List<Key> categories) {
-        this.categories = categories;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public List<Key> getQuestions() {
-        return questions;
-    }
+	public List<Key> getCategories() {
+		return categories;
+	}
 
-    public void setQuestions(List<Key> questions) {
-        this.questions = questions;
-    }
+	public void setCategories(List<Key> categories) {
+		this.categories = categories;
+	}
 
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
+	public List<Key> getQuestions() {
+		return questions;
+	}
 
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
+	public void setQuestions(List<Key> questions) {
+		this.questions = questions;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public Boolean getIsPrivate() {
+		return isPrivate;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setIsPrivate(Boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
 
-    public Key getUser() {
-        return user;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setUser(Key user) {
-        this.user = user;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public Date getDateCreated() {
-        return dateCreated;
-    }
+	public Key getUser() {
+		return user;
+	}
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
+	public void setUser(Key user) {
+		this.user = user;
+	}
 
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String toString() {
+		return "[Quiz with id: " + this.getId().toString() + ", name: " + this.getName() + ", password: "
+				+ this.getPassword() + ", noQuestions: " + this.getNoQuestions() + ", dateCreated: "
+				+ this.getDateCreated().toString() + ", isPrivate: " + this.getIsPrivate()
+				+ ", notify: " + this.getNotify() + ", user: " + this.getUser().toString() + "]";
+	}
 }

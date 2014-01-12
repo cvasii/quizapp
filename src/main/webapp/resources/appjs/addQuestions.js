@@ -111,12 +111,14 @@ var QuestionAdditioner = {
 			placement : 'right',
 			defaultValue : '',
 			title : 'Add answer',
-			placeholder : 'Question',
-			value : '',
+			placeholder : 'Answer',
 			validate : function(value) {
 				if (value.length == 0)
 					return 'Please enter the answer.';
-			}
+			},
+			success: function (response, newValue) {
+                $(this).attr('data-value', newValue);
+            }
 		});
 	},
 
